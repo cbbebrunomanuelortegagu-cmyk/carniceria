@@ -1,0 +1,197 @@
+<section class="pos-page" aria-labelledby="pos-title">
+  <header class="pos-heading">
+    <div>
+      <p class="eyebrow">La Selecta · Punto de venta</p>
+      <h1 id="pos-title">Venta de mostrador</h1>
+      <p>Selecciona los productos para comenzar una nueva venta.</p>
+    </div>
+    <div class="register-status">
+      <span class="status-dot" aria-hidden="true"></span>
+      Caja abierta
+    </div>
+  </header>
+
+  <div class="pos-layout">
+    <section class="product-section" aria-labelledby="products-title">
+      <div class="catalog-toolbar">
+        <label class="search-field">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+            <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8" />
+            <path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+          <span class="visually-hidden">Buscar productos</span>
+          <input
+            type="search"
+            placeholder="Buscar producto..."
+            [value]="busqueda()"
+            (input)="cambiarBusqueda($event)"
+          />
+        </label>
+        <div class="category-filters" aria-label="Filtrar productos por categoría">
+          @for (categoria of categorias; track categoria) {
+            <button
+              type="button"
+              [class.active]="categoriaActiva() === categoria"
+              [attr.aria-pressed]="categoriaActiva() === categoria"
+              (click)="cambiarCategoria(categoria)"
+            >
+              {{ categoria }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">Selección rápida</p>
+          <h2 id="products-title">Productos</h2>
+        </div>
+        <span>{{ productosFiltrados().length }} productos</span>
+      </div>
+
+      @if (productosFiltrados().length > 0) {
+        <div class="product-grid">
+          @for (producto of productosFiltrados(); track producto.id) {
+            <button
+              class="product-tile"
+              type="button"
+              [disabled]="cantidadDisponible(producto) < paso(producto)"
+              [attr.aria-label]="'Añadir ' + producto.nombre + ', ' + (producto.precio | currency:'USD':'symbol':'1.2-2') + ' por ' + producto.unidad"
+              (click)="agregarProducto(producto)"
+            >
+              <div class="product-photo">
+                <img [src]="producto.imagen" [alt]="producto.nombre" />
+                <span class="category-chip">{{ producto.categoria }}</span>
+                <span class="add-icon" aria-hidden="true">+</span>
+              </div>
+              <span class="product-name">{{ producto.nombre }}</span>
+              <span class="product-price">
+                {{ producto.precio | currency:'USD':'symbol':'1.2-2' }}
+                <small>/ {{ producto.unidad }}</small>
+              </span>
+              <span
+                class="product-stock"
+                [class.low-stock]="cantidadDisponible(producto) <= 3"
+              >
+                {{ formatearCantidad(cantidadDisponible(producto)) }}
+                {{ producto.unidad }} disponibles
+              </span>
+            </button>
+          }
+        </div>
+      } @else {
+        <div class="empty-products">
+          <h2>No hay productos disponibles</h2>
+          <p>Cambia el filtro o prueba otra búsqueda.</p>
+        </div>
+      }
+    </section>
+
+    <aside class="sale-panel" aria-labelledby="sale-title">
+      <header class="sale-header">
+        <div class="sale-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H20v14H5.5A1.5 1.5 0 0 1 4 16.5v-11Z" stroke="currentColor" stroke-width="1.7" />
+            <path d="M4 6v13a1 1 0 0 0 1 1h14M15 8h2M15 11h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div>
+          <h2 id="sale-title">Venta actual</h2>
+          <p>{{ items().length }} {{ items().length === 1 ? 'producto' : 'productos' }}</p>
+        </div>
+        <span class="sale-badge">NUEVA</span>
+      </header>
+
+      @if (items().length > 0) {
+        <div class="sale-items">
+          @for (item of items(); track item.producto.id) {
+            <article class="sale-item">
+              <img [src]="item.producto.imagen" [alt]="item.producto.nombre" />
+              <div class="item-info">
+                <h3>{{ item.producto.nombre }}</h3>
+                <p>{{ item.producto.precio | currency:'USD':'symbol':'1.2-2' }} / {{ item.producto.unidad }}</p>
+                <div class="quantity-stepper" [attr.aria-label]="'Cantidad de ' + item.producto.nombre">
+                  <button
+                    type="button"
+                    [attr.aria-label]="'Quitar una cantidad de ' + item.producto.nombre"
+                    (click)="cambiarCantidad(item, -paso(item.producto))"
+                  >−</button>
+                  <span>{{ formatearCantidad(item.cantidad) }} {{ item.producto.unidad }}</span>
+                  <button
+                    type="button"
+                    [disabled]="item.cantidad + paso(item.producto) > item.producto.stock"
+                    [attr.aria-label]="'Agregar una cantidad de ' + item.producto.nombre"
+                    (click)="cambiarCantidad(item, paso(item.producto))"
+                  >+</button>
+                </div>
+              </div>
+              <div class="item-total">
+                <strong>{{ item.producto.precio * item.cantidad | currency:'USD':'symbol':'1.2-2' }}</strong>
+                <button
+                  type="button"
+                  class="remove-item"
+                  [attr.aria-label]="'Eliminar ' + item.producto.nombre"
+                  (click)="quitarProducto(item.producto.id)"
+                >Eliminar</button>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="empty-sale">
+          <div class="empty-sale-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H20v14H5.5A1.5 1.5 0 0 1 4 16.5v-11Z" stroke="currentColor" stroke-width="1.6" />
+              <path d="M8 9h4M8 12h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+          </div>
+          <h3>Venta vacía</h3>
+          <p>Selecciona productos para agregarlos a la venta.</p>
+        </div>
+      }
+
+      <footer class="sale-footer">
+        <div class="totals">
+          <div><span>Subtotal</span><span>{{ subtotal() | currency:'USD':'symbol':'1.2-2' }}</span></div>
+          <div><span>Impuestos ({{ tasaImpuesto * 100 }}%)</span><span>{{ impuestos() | currency:'USD':'symbol':'1.2-2' }}</span></div>
+          <div class="grand-total"><strong>Total a cobrar</strong><strong>{{ total() | currency:'USD':'symbol':'1.2-2' }}</strong></div>
+        </div>
+        @if (mensajeError()) {
+          <p class="feedback error" role="alert">{{ mensajeError() }}</p>
+        }
+        @if (confirmacion()) {
+          <p class="feedback success" role="status">{{ confirmacion() }}</p>
+        }
+        <p class="payment-label">Completar venta en:</p>
+        <div class="payment-actions">
+          <button
+            class="pay-button cash"
+            type="button"
+            [disabled]="items().length === 0 || procesando()"
+            (click)="completarVenta('efectivo')"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.7" />
+              <circle cx="12" cy="12.5" r="2.5" stroke="currentColor" stroke-width="1.7" />
+              <path d="M7 9h.01M17 16h.01" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" />
+            </svg>
+            {{ procesando() ? 'Procesando...' : 'Efectivo' }}
+          </button>
+          <button
+            class="pay-button card"
+            type="button"
+            [disabled]="items().length === 0 || procesando()"
+            (click)="completarVenta('tarjeta')"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.7" />
+              <path d="M3 10h18M7 15h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+            </svg>
+            {{ procesando() ? 'Procesando...' : 'Tarjeta' }}
+          </button>
+        </div>
+        <p class="stock-note">El stock se actualizará al confirmar el cobro.</p>
+      </footer>
+    </aside>
+  </div>
+</section>
