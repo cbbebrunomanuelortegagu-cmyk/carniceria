@@ -13,16 +13,45 @@ export class ProductoService {
   private readonly almacenamiento = inject(LocalStorageService);
   private readonly productosGuardados =
     this.almacenamiento.leer<Producto[]>(CLAVE_PRODUCTOS);
+  private readonly productosIniciales = this.sincronizarCatalogo(
+    this.productosGuardados
+  );
   private readonly estado = signal<Producto[]>(
-    this.productosGuardados ?? PRODUCTOS
+    this.productosIniciales
   );
 
   readonly productos = this.estado.asReadonly();
 
   constructor() {
-    if (this.productosGuardados === null) {
-      this.almacenamiento.guardar(CLAVE_PRODUCTOS, this.estado());
+    this.almacenamiento.guardar(CLAVE_PRODUCTOS, this.estado());
+  }
+
+  private sincronizarCatalogo(productosGuardados: Producto[] | null): Producto[] {
+    if (productosGuardados === null) {
+      return PRODUCTOS;
     }
+
+    const guardadosPorId = new Map(
+      productosGuardados.map((producto) => [producto.id, producto])
+    );
+    const productosActualizados = PRODUCTOS.map((productoBase) => {
+      const guardado = guardadosPorId.get(productoBase.id);
+      if (!guardado) {
+        return productoBase;
+      }
+
+      guardadosPorId.delete(productoBase.id);
+      return {
+        ...productoBase,
+        ...guardado,
+        nombre: productoBase.nombre,
+        descripcion: productoBase.descripcion,
+        categoria: productoBase.categoria,
+        imagen: productoBase.imagen
+      };
+    });
+
+    return [...productosActualizados, ...guardadosPorId.values()];
   }
 
   obtenerPorId(id: string): Producto | undefined {

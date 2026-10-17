@@ -4,7 +4,7 @@ import { PosMostradorComponent } from './features/ventas/pos-mostrador/pos-mostr
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'tienda' },
-  { path: 'tienda', component: CatalogoComponent, title: 'Tienda Virtual | La Selecta' },
-  { path: 'ventas', component: PosMostradorComponent, title: 'Punto de Venta | La Selecta' },
+  { path: 'tienda', component: CatalogoComponent, title: 'Tienda Virtual | EdenFarm' },
+  { path: 'ventas', component: PosMostradorComponent, title: 'Punto de Venta | EdenFarm' },
   { path: '**', redirectTo: 'tienda' }
 ];
