@@ -18,7 +18,7 @@ describe('AppComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
 
     expect(app).toBeTruthy();
-    expect(compiled.querySelector('.brand-name')?.textContent).toContain('La Selecta');
+    expect(compiled.querySelector('.brand-name')?.textContent).toContain('EdenFarm');
     expect(compiled.querySelector('app-footer')).toBeTruthy();
     expect(compiled.querySelector('app-carrito-drawer')).toBeTruthy();
     expect(compiled.querySelector('router-outlet')).toBeTruthy();

@@ -1,8 +1,8 @@
 <header class="site-header">
   <div class="navbar">
-    <a class="brand" routerLink="/tienda" aria-label="La Selecta, ir a la tienda">
-      <span class="brand-mark" aria-hidden="true">LS</span>
-      <span class="brand-name">La Selecta</span>
+    <a class="brand" routerLink="/inicio" aria-label="EdenFarm, ir a Inicio">
+      <span class="brand-mark" aria-hidden="true">EF</span>
+      <span class="brand-name">EdenFarm</span>
     </a>
 
     <button
@@ -25,21 +25,35 @@
       aria-label="Navegación principal"
     >
       <a
-        routerLink="/tienda"
+        routerLink="/inicio"
         routerLinkActive="is-active"
         [routerLinkActiveOptions]="{ exact: true }"
         (click)="cerrarMenu()"
       >
-        Tienda Virtual
+        Inicio
       </a>
       <a
-        routerLink="/ventas"
+        routerLink="/carnes-al-vacio"
         routerLinkActive="is-active"
         [routerLinkActiveOptions]="{ exact: true }"
         (click)="cerrarMenu()"
       >
-        Punto de Venta (POS)
+        Carnes al vacío
       </a>
+      <a routerLink="/pedidos" routerLinkActive="is-active" (click)="cerrarMenu()">Pedidos / Reservas</a>
+      <a routerLink="/nosotros" routerLinkActive="is-active" (click)="cerrarMenu()">Nosotros</a>
+      <a routerLink="/socios" routerLinkActive="is-active" (click)="cerrarMenu()">Sé socio</a>
+      <a
+        class="cart-link reservation-cart-link"
+        routerLink="/carrito-reservas"
+        [attr.aria-label]="'Carrito de pedidos: ' + paquetesReserva() + ' paquetes seleccionados'"
+        (click)="cerrarMenu()"
+      >
+        <span>Carrito</span>
+        <span class="cart-count" aria-live="polite">{{ paquetesReserva() }}</span>
+      </a>
+      @if (esTiendaHeredada()) {
+        <a routerLink="/ventas" routerLinkActive="is-active" (click)="cerrarMenu()">Punto de Venta (POS)</a>
       <button
         class="cart-link"
         type="button"
@@ -65,6 +79,7 @@
         <span>Carrito</span>
         <span class="cart-count" aria-live="polite">{{ cantidadCarrito() }}</span>
       </button>
+      }
     </nav>
   </div>
 </header>

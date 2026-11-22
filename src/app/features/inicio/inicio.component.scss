@@ -1,0 +1,23 @@
+:host { display: block; }
+.home-page { width: min(100% - 2.5rem, 1180px); margin: 0 auto; padding: clamp(2.5rem, 6vw, 5rem) 0; }
+.hero { position: relative; overflow: hidden; padding: clamp(2rem, 7vw, 5.5rem); border-radius: 20px; background: #DDF3FF; background-position: center; background-size: cover; }
+.hero-with-image { background-blend-mode: normal; }
+.eyebrow { margin: 0 0 0.75rem; color: #8c382d; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+h1, h2 { color: #273b2d; font-family: Georgia, 'Times New Roman', serif; }
+h1 { max-width: 720px; margin: 0; font-size: clamp(2.7rem, 7vw, 5.5rem); line-height: 0.98; }
+.hero-copy { max-width: 540px; margin: 1.25rem 0 0; color: #555d53; font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.65; }
+.hero-actions { display: flex; margin-top: 1.7rem; flex-wrap: wrap; gap: 0.7rem; }
+.button { display: inline-flex; min-height: 46px; padding: 0 1.2rem; align-items: center; justify-content: center; border-radius: 7px; font-size: 0.9rem; font-weight: 700; text-decoration: none; }
+.primary { background: #273b2d; color: #fff; }
+.secondary { border: 1px solid #273b2d; color: #273b2d; }
+.content-pending { margin: 1.5rem 0 0; color: #77796f; font-size: 0.78rem; }
+.home-links { display: grid; margin-top: 1.25rem; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.feature-card { display: flex; min-height: 220px; padding: 1.4rem; flex-direction: column; border: 1px solid #e5e1d8; border-radius: 12px; background: #fff; color: inherit; text-decoration: none; transition: transform 160ms ease, box-shadow 160ms ease; }
+.feature-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgb(39 59 45 / 9%); }
+.card-number { color: #8c382d; font-size: 0.75rem; font-weight: 700; }
+.feature-card h2 { margin: 1rem 0 0.5rem; font-size: 1.3rem; }
+.feature-card p { margin: 0; color: #686c64; font-size: 0.88rem; line-height: 1.5; }
+.card-link { margin-top: auto; padding-top: 1.25rem; color: #8c382d; font-size: 0.83rem; font-weight: 700; }
+@media (max-width: 850px) { .home-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .home-page { width: min(100% - 1.5rem, 1180px); padding: 1.5rem 0; } .hero { padding: 2rem 1.35rem; } .home-links { grid-template-columns: 1fr; } .feature-card { min-height: 185px; } }
+@media (prefers-reduced-motion: reduce) { .feature-card { transition: none; } .feature-card:hover { transform: none; } }

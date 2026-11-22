@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="650" viewBox="0 0 1600 650">
+  <defs>
+    <pattern id="vacas" width="260" height="220" patternUnits="userSpaceOnUse">
+      <g opacity=".34" transform="translate(28 22)">
+        <path d="M48 62 25 43q-9-8-13 1-4 9 5 15l25 17m96-14 23-19q9-8 13 1 4 9-5 15l-25 17" fill="#fff" stroke="#356a7a" stroke-width="4" stroke-linecap="round"/>
+        <path d="M65 42q-3-15 7-17 11-1 12 15m39 2q3-15-7-17-11-1-12 15" fill="#f4c66a" stroke="#356a7a" stroke-width="4"/>
+        <path d="M48 55q0-20 17-20h52q17 0 17 20v57q0 43-43 43t-43-43z" fill="#fff" stroke="#356a7a" stroke-width="4"/>
+        <path d="M62 49q5-13 19-8l9 10-9 15-18-2zm43-1q11-12 23-2l3 16-19 5-12-10zM51 111l19-7 11 8-8 17-18-3zm56-1 16-8 12 8-4 18-19 1z" fill="#356a7a"/>
+        <ellipse cx="78" cy="86" rx="4" ry="6" fill="#263b3e"/><ellipse cx="106" cy="86" rx="4" ry="6" fill="#263b3e"/>
+        <path d="M69 113q22-22 46 0 0 19-23 19t-23-19" fill="#f3a9a1" stroke="#356a7a" stroke-width="3"/>
+        <ellipse cx="82" cy="114" rx="2.5" ry="2" fill="#6f4b4b"/><ellipse cx="102" cy="114" rx="2.5" ry="2" fill="#6f4b4b"/>
+      </g>
+    </pattern>
+  </defs>
+  <path fill="#DDF3FF" d="M0 0h1600v650H0z"/>
+  <path fill="url(#vacas)" d="M0 0h1600v650H0z"/>
+</svg>

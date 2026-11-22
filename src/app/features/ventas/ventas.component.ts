@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     <section class="page-intro" aria-labelledby="page-title">
       <p class="eyebrow">Punto de venta</p>
       <h1 id="page-title">Registro de Ventas (POS)</h1>
-      <p>Registra y consulta las ventas de La Selecta.</p>
+      <p>Registra y consulta las ventas de EdenFarm.</p>
     </section>
   `,
   styles: [`

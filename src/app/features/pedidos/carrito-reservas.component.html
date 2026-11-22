@@ -1,0 +1,46 @@
+<section class="cart-page" aria-labelledby="cart-title">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">Tu selección</p>
+      <h1 id="cart-title">Carrito de pedidos</h1>
+    </div>
+    <a routerLink="/pedidos">← Seguir eligiendo</a>
+  </header>
+
+  <p class="demo-notice" role="note"><strong>Carrito de demostración:</strong> los pesos y paquetes no son inventario real. El pago y la reserva todavía no están conectados.</p>
+
+  @if (cart.items().length > 0) {
+    <div class="cart-layout">
+      <div class="cart-items">
+        @for (item of cart.items(); track item.packageId) {
+          <article class="cart-item">
+            <div>
+              <h2>{{ item.productName }}</h2>
+              <p>{{ formatearPeso(item.pesoKg) }} × {{ formatearBs(item.precioKg) }}/kg</p>
+              <span class="demo-tag">Peso de ejemplo</span>
+            </div>
+            <div class="item-price">
+              <strong>{{ formatearBs(item.precioPaqueteBs) }}</strong>
+              <button type="button" (click)="cart.quitar(item.packageId)">Quitar</button>
+            </div>
+          </article>
+        }
+      </div>
+
+      <aside class="summary" aria-label="Resumen del carrito">
+        <h2>Revisa tu pedido</h2>
+        <div class="summary-line"><span>Paquetes seleccionados</span><strong>{{ cart.cantidadPaquetes() }}</strong></div>
+        <div class="summary-line total"><span>Total estimado</span><strong>{{ formatearBs(cart.totalEstimadoBs()) }}</strong></div>
+        <p>El total se calcula con el precio de referencia por kilogramo y el peso de cada ejemplo.</p>
+        <button class="pay-button" type="button" [disabled]="cart.items().length === 0" (click)="pagarDemostracion()">Pagar</button>
+        <p class="payment-note">Demostración: no se procesa ningún pago ni se registra una compra.</p>
+      </aside>
+    </div>
+  } @else {
+    <div class="empty-cart">
+      <h2>Tu carrito está vacío</h2>
+      <p>Selecciona un peso en Pedidos / Reservas para comenzar.</p>
+      <a routerLink="/pedidos">Elegir pesos</a>
+    </div>
+  }
+</section>

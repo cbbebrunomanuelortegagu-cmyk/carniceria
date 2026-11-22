@@ -1,0 +1,91 @@
+<section class="orders-page" aria-labelledby="orders-title">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">Arma tu selección</p>
+      <h1 id="orders-title">Pedidos / Reservas</h1>
+      <p>Elige un peso de ejemplo para agregarlo al carrito y revisar el cálculo estimado.</p>
+    </div>
+    <a class="cart-link" routerLink="/carrito-reservas" [attr.aria-label]="'Ver carrito, ' + seleccionados().length + ' paquetes seleccionados'">
+      <span aria-hidden="true">▱</span> Ver carrito <b>{{ seleccionados().length }}</b>
+    </a>
+  </header>
+
+  <p class="demo-notice" role="note"><strong>Demostración:</strong> los pesos que aparecen aquí son ejemplos visuales, no representan inventario disponible ni están conectados a una base de datos.</p>
+
+  @if (cargando()) {
+    <p class="empty-state" role="status">Cargando productos del catálogo…</p>
+  } @else if (error()) {
+    <p class="empty-state error-state" role="alert">{{ error() }}</p>
+  } @else if (productos().length === 0) {
+    <p class="empty-state">No hay productos publicados en el catálogo.</p>
+  } @else {
+    <div class="product-picker">
+      <label for="order-product">Producto</label>
+      <select id="order-product" [value]="productId()" (change)="cambiarProducto($event)">
+        @for (producto of productos(); track producto.id) {
+          <option [value]="producto.id">{{ producto.nombre }}</option>
+        }
+      </select>
+      <span class="reference-price">Precio de referencia: {{ precioReferencia }}</span>
+    </div>
+
+    @if (productoSeleccionado()?.unidadPrecio === 'pack') {
+      <div class="empty-state">
+        <h2>Presentación por peso pendiente</h2>
+        <p>Hamburguesa se comercializa por pack. El peso y el cálculo de esa presentación todavía no están definidos.</p>
+      </div>
+    } @else {
+      <div class="weight-groups">
+        <section class="weight-group" aria-labelledby="under-one-title">
+          <h2 id="under-one-title">Menos de 1 kg</h2>
+          @if (paquetesPorGrupo('small').length) {
+            <div class="weight-options">
+              @for (paquete of paquetesPorGrupo('small'); track paquete.id) {
+                <button type="button" [class.selected]="estaEnCarrito(paquete)" [attr.aria-pressed]="estaEnCarrito(paquete)" (click)="alternarPaquete(paquete)">
+                  {{ formatearPeso(paquete.pesoKg) }}
+                  <small>{{ formatearBs(precioPaquete(paquete)) }}</small>
+                  <small>{{ estaEnCarrito(paquete) ? 'En carrito' : 'Agregar' }}</small>
+                </button>
+              }
+            </div>
+          } @else { <p class="empty-group">No hay pesos de ejemplo en este rango.</p> }
+        </section>
+
+        <section class="weight-group" aria-labelledby="one-two-title">
+          <h2 id="one-two-title">Entre 1 y 2 kg</h2>
+          @if (paquetesPorGrupo('medium').length) {
+            <div class="weight-options">
+              @for (paquete of paquetesPorGrupo('medium'); track paquete.id) {
+                <button type="button" [class.selected]="estaEnCarrito(paquete)" [attr.aria-pressed]="estaEnCarrito(paquete)" (click)="alternarPaquete(paquete)">
+                  {{ formatearPeso(paquete.pesoKg) }}
+                  <small>{{ formatearBs(precioPaquete(paquete)) }}</small>
+                  <small>{{ estaEnCarrito(paquete) ? 'En carrito' : 'Agregar' }}</small>
+                </button>
+              }
+            </div>
+          } @else { <p class="empty-group">No hay pesos de ejemplo en este rango.</p> }
+        </section>
+
+        <section class="weight-group" aria-labelledby="over-two-title">
+          <h2 id="over-two-title">Más de 2 kg</h2>
+          @if (paquetesPorGrupo('large').length) {
+            <div class="weight-options">
+              @for (paquete of paquetesPorGrupo('large'); track paquete.id) {
+                <button type="button" [class.selected]="estaEnCarrito(paquete)" [attr.aria-pressed]="estaEnCarrito(paquete)" (click)="alternarPaquete(paquete)">
+                  {{ formatearPeso(paquete.pesoKg) }}
+                  <small>{{ formatearBs(precioPaquete(paquete)) }}</small>
+                  <small>{{ estaEnCarrito(paquete) ? 'En carrito' : 'Agregar' }}</small>
+                </button>
+              }
+            </div>
+          } @else { <p class="empty-group">No hay pesos de ejemplo en este rango.</p> }
+        </section>
+      </div>
+    }
+
+    <p class="formula-note">Cálculo estimado por paquete: precio por kg × peso exacto. El importe se redondea a centavos para mostrarlo.</p>
+    <a class="continue-button" routerLink="/carrito-reservas">Revisar carrito ({{ seleccionados().length }})</a>
+  }
+
+  @if (aviso()) { <p class="status-message" role="status">{{ aviso() }}</p> }
+</section>
