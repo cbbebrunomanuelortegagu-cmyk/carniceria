@@ -51,7 +51,7 @@
 .navigation {
   display: flex;
   align-items: center;
-  gap: clamp(1.25rem, 3vw, 2.5rem);
+  gap: clamp(0.7rem, 1.6vw, 1.5rem);
 }
 
 .navigation a,
@@ -61,7 +61,7 @@
   gap: 0.5rem;
   min-height: 44px;
   color: #4d514a;
-  font-size: 0.94rem;
+  font-size: 0.86rem;
   font-weight: 600;
   text-decoration: none;
   transition: color 150ms ease;
@@ -73,6 +73,12 @@
   background: transparent;
   font-family: inherit;
   cursor: pointer;
+}
+
+.navigation .reservation-cart-link {
+  padding: 0 0.65rem;
+  border: 1px solid #dedbd4;
+  border-radius: 8px;
 }
 
 .navigation a:hover,

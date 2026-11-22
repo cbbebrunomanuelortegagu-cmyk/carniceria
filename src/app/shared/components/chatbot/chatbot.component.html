@@ -1,0 +1,58 @@
+<button
+  class="chat-launcher"
+  type="button"
+  [attr.aria-expanded]="abierto()"
+  aria-controls="chat-panel"
+  (click)="alternar()"
+>
+  <span aria-hidden="true">{{ abierto() ? '×' : '✦' }}</span>
+  {{ abierto() ? 'Cerrar asistente' : '¿Necesitas ayuda?' }}
+</button>
+
+@if (abierto()) {
+  <section id="chat-panel" class="chat-panel" aria-label="Asistente de EdenFarm">
+    <header class="chat-header">
+      <div>
+        <p class="chat-eyebrow">EdenFarm</p>
+        <h2>Asistente</h2>
+      </div>
+      <button class="close-button" type="button" aria-label="Cerrar asistente" (click)="alternar()">×</button>
+    </header>
+
+    <div class="chat-messages" aria-live="polite" aria-relevant="additions text">
+      @if (mensajes().length === 0) {
+        <p class="chat-intro">Escribe tu consulta. El asistente solo responderá cuando haya una fuente de conocimiento conectada.</p>
+      }
+      @for (mensaje of mensajes(); track mensaje.id) {
+        <p class="message" [class.user-message]="mensaje.role === 'user'" [class.assistant-message]="mensaje.role === 'assistant'">
+          {{ mensaje.content }}
+        </p>
+      }
+      @if (enviando()) {
+        <p class="message assistant-message" role="status">Consultando…</p>
+      }
+      @if (error()) {
+        <p class="chat-error" role="alert">{{ error() }}</p>
+      }
+    </div>
+
+    <form class="chat-form" (ngSubmit)="enviar()">
+      <label class="visually-hidden" for="chat-message">Tu mensaje</label>
+      <textarea
+        #messageInput
+        id="chat-message"
+        name="message"
+        rows="2"
+        maxlength="2000"
+        placeholder="Escribe un mensaje…"
+        [ngModel]="borrador()"
+        (ngModelChange)="borrador.set($event)"
+        [disabled]="enviando()"
+        (keydown.enter)="$event.preventDefault(); enviar()"
+      ></textarea>
+      <button type="submit" [disabled]="enviando() || !borrador().trim()">
+        {{ enviando() ? 'Enviando…' : 'Enviar' }}
+      </button>
+    </form>
+  </section>
+}

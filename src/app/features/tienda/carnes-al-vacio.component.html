@@ -1,0 +1,30 @@
+<section class="catalog-page" aria-labelledby="catalog-title">
+  <header class="page-heading">
+    <p class="eyebrow">EdenFarm</p>
+    <h1 id="catalog-title">Carnes al vacío</h1>
+    <p>Catálogo informativo y precios de referencia.</p>
+  </header>
+
+  @if (cargando()) {
+    <p class="catalog-state" role="status">Cargando catálogo…</p>
+  } @else if (error()) {
+    <p class="catalog-state error" role="alert">{{ error() }}</p>
+  } @else if (productos().length === 0) {
+    <p class="catalog-state">No hay productos publicados en el catálogo.</p>
+  } @else {
+    <div class="product-list">
+      @for (producto of productos(); track producto.id) {
+        <article class="product-row">
+          @if (producto.imagenRuta) {
+            <img class="product-thumb" [src]="producto.imagenRuta" [alt]="producto.nombre" />
+          } @else {
+            <div class="product-thumb image-pending" aria-label="Imagen pendiente">Imagen pendiente</div>
+          }
+          <h2>{{ producto.nombre }}</h2>
+          <p class="price">{{ producto.moneda }} {{ producto.precio }} <span>/ {{ producto.unidadPrecio }}</span></p>
+        </article>
+      }
+    </div>
+  }
+  <p class="catalog-note">La selección de pesos y el cálculo estimado se realizan en Pedidos / Reservas.</p>
+</section>

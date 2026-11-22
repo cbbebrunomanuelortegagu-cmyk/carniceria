@@ -1,0 +1,41 @@
+<section class="home-page" aria-labelledby="home-title">
+  <div class="hero" [style.background-color]="colorFondo"
+    [style.background-image]="imagenRuta ? 'url(' + imagenRuta + ')' : null"
+    [class.hero-with-image]="!!imagenRuta">
+    <p class="eyebrow">EdenFarm</p>
+    <h1 id="home-title">Carnes al vacío</h1>
+    <p class="hero-copy">Conoce el catálogo y consulta los pesos disponibles para armar tu pedido.</p>
+    <div class="hero-actions">
+      <a class="button primary" routerLink="/carnes-al-vacio">Ver catálogo</a>
+      <a class="button secondary" routerLink="/pedidos">Armar un pedido</a>
+    </div>
+    <p class="content-pending">Presentación e imágenes oficiales pendientes de proporcionar.</p>
+  </div>
+
+  <div class="home-links" aria-label="Conoce EdenFarm">
+    <a class="feature-card" routerLink="/carnes-al-vacio">
+      <span class="card-number">01</span>
+      <h2>Carnes al vacío</h2>
+      <p>Consulta los cortes y precios de referencia.</p>
+      <span class="card-link">Explorar catálogo →</span>
+    </a>
+    <a class="feature-card" routerLink="/pedidos">
+      <span class="card-number">02</span>
+      <h2>Pedidos / Reservas</h2>
+      <p>Elige pesos de demostración y revisa tu carrito.</p>
+      <span class="card-link">Ver selección →</span>
+    </a>
+    <a class="feature-card" routerLink="/nosotros">
+      <span class="card-number">03</span>
+      <h2>Nosotros</h2>
+      <p>La presentación oficial se añadirá cuando esté disponible.</p>
+      <span class="card-link">Conocer más →</span>
+    </a>
+    <a class="feature-card" routerLink="/socios">
+      <span class="card-number">04</span>
+      <h2>Sé socio</h2>
+      <p>Información pendiente de proporcionar.</p>
+      <span class="card-link">Ver sección →</span>
+    </a>
+  </div>
+</section>
